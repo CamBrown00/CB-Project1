@@ -73,21 +73,30 @@ void printBoard(){
     } 
 }
 
-bool movePiece(int moveRow, int moveColumn){
+bool movePiece(int row, int column, int moveRow, int moveColumn, string player){
+    bool hasMoved = false;
+    int input;
     vector<vector<int>> oldGrid = grid;
+    if (!checkForPiece(moveRow, moveColumn, "white's") && !checkForPiece(moveRow, moveColumn, "black's")){
+        oldGrid[moveRow][moveColumn] = oldGrid[row][column];
+        oldGrid[row][column] = 0;
+        grid = oldGrid;
+        hasMoved = true;
+    }
+    return hasMoved;
 
 }
 
 bool checkForPiece(int pieceRow, int pieceColumn, string player){
     bool found = false;
-    if (pieceRow > 0 && pieceColumn > 0 && pieceRow <= length && pieceColumn <= width){
+    if (pieceRow > -1 && pieceColumn > -1 && pieceRow <= length && pieceColumn <= width){
         if (player == "white's"){
-            if (grid[pieceRow-1][pieceColumn-1] == -1){
+            if (grid[pieceRow][pieceColumn] == -1){
                 found = true;
             } 
         }
         if (player == "black's"){
-            if (grid[pieceRow-1][pieceColumn-1] == 1){
+            if (grid[pieceRow][pieceColumn] == 1){
                 found = true;
             } 
         }

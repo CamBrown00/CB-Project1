@@ -13,11 +13,11 @@ int main() {
 
 void playCheckers(){
     bool gameOver = false;
-    int row;
-    int column;
+    bool hasMoved = false;
+    int row, column, moveRow, moveColumn;
     string player = "black's";
     Board b1(8, 8, 24);
-    cout << "Welcome to checkers, enter -1 to quit the game at any time" << endl;
+    cout << "Welcome to checkers, enter 0 to quit the game at any time" << endl;
 
     while(gameOver == false){
         b1.printBoard();
@@ -25,17 +25,37 @@ void playCheckers(){
 
         cout << "It is " + player + " turn."<< endl;
         
-        cout << "Please enter the row # of the piece you would like to select: " << endl;
-        row = getInput();
+        cout << "\nPlease enter the row # of the piece you would like to select to move: ";
+        row = getInput() - 1;
 
-        cout << "Please enter the column # of the piece you would like to select: " << endl;
-        column = getInput();
+        cout << "\nPlease enter the column # of the piece you would like to select to move: ";
+        column = getInput() - 1;
 
         if (row == -1 || column == -1){
             gameOver = true;
             break;
         }
-        cout << b1.checkForPiece(row, column, player) << endl;
+
+        if (b1.checkForPiece(row, column, player)){
+            while(!hasMoved){
+                cout << "\nPlease enter the row # of the tile you would like to move to: ";
+                moveRow = getInput() - 1;
+
+                cout << "\nPlease enter the column # of the tile you would like to move to: ";
+                moveColumn = getInput() - 1;
+
+            
+                hasMoved = b1.movePiece(row, column, moveRow, moveColumn, player);
+                if (hasMoved){
+                    if (player == "black's"){
+                        player = "white's";
+                    }
+                    if (player == "white's"){
+                        player = "black's";
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -1,9 +1,11 @@
 #include <iostream>
+#include "Board.h"
 
 using namespace std;
 
 int main() {
-    cout << "TgrdjyfhfESTING" << endl;
-
+    cout << "TESTING" << endl;
+    Board b1(8, 8, 24);
+    b1.printBoard();
     return 0;
 }

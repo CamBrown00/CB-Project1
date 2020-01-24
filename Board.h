@@ -10,39 +10,69 @@ class Board{
 private:
 int length;
 int width;
-int pieceCount;
+int pieceTotal;
+int blackScore;
+int whiteScore;
 
-vector<vector<string>> grid;
+vector<vector<int>> grid;
 
 public:
-Board(int length, int width, int pieceCount){
-    this->pieceCount = pieceCount;
+Board(int length, int width, int pieceTotal){
+    this->pieceTotal = pieceTotal;
     this->length = length;
     this->width = width;
-    buildBoard();
-};
+    buildGrid();
+    printBoard();
+}
 
-void buildBoard(){
-    vector<string> tempRow;
-    vector<string> tempRow2;
-    for (int i = 0; i < width/2; ++i){
-        for (int j = 0; j < length/2; ++j){
-            tempRow.push_back("○ • ");
-            tempRow2.push_back("• ○ ");
+void buildGrid(){
+    vector<int> tempPieces;
+    for (int i = 0; i < length; ++i){
+        grid.push_back(tempPieces);
+        for (int j = 0; j < width; ++j){
+            grid[i].push_back(0);
         }
-        tempRow[tempRow.size()-1].pop_back();
-        tempRow2[tempRow2.size()-1].pop_back();
-        grid.push_back(tempRow);
-        grid.push_back(tempRow2);
-        tempRow.clear();
-        tempRow2.clear();
     }
 
+    for (int i = 0; i < length/2-1; ++i){
+        for (int j = 0; j < width; ++j){
+            if (((i+1) % 2) != ((j+1) % 2)){
+                grid[i][j] = -1;
+            }
+        }
+    }
+    for (int i = length/2+1; i < length; ++i){
+        for (int j = 0; j < width; ++j){
+            if (((i+1) % 2) != ((j+1) % 2)){
+                grid[i][j] = 1;
+            }
+        }
+    }
 }
 
 void printBoard(){
-    printVectorOfVectors(grid);
-};
+    for (int i = 0; i < length; ++i){
+        for (int j = 0; j < width; ++j){
+            
+            if (grid[i][j] != 0){
+                if (grid[i][j] == -1){
+                    cout << "☻ ";
+                }
+                else if (grid[i][j] == 1){
+                    cout << "☺ ";
+                }
+            }else{
+                if (((i+1) % 2) == ((j+1) % 2)){
+                    cout << "• ";
+                }else{
+                    cout << "○ ";
+                }
+            }
+            
+        }
+        cout << endl;
+    } 
+}
 
 void printVectorOfVectors(vector<vector<string>> vec){
     for (int i = 0; i < vec.size(); ++i){
@@ -57,10 +87,21 @@ void printVector(vector<string> vec){
     cout << endl;
 }
 
-void getInput();
+void getInput(){
 
-void movePiece();
+}
 
+void movePiece(){
+
+}
+
+int getBlackScore(){
+    return blackScore;
+}
+
+int getWhiteScore(){
+    return whiteScore;
+}
 
 };
 

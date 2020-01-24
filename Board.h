@@ -11,8 +11,8 @@ private:
 int length;
 int width;
 int pieceTotal;
-int blackScore;
-int whiteScore;
+int blackScore = 0;
+int whiteScore = 0;
 
 vector<vector<int>> grid;
 
@@ -22,7 +22,6 @@ Board(int length, int width, int pieceTotal){
     this->length = length;
     this->width = width;
     buildGrid();
-    printBoard();
 }
 
 void buildGrid(){
@@ -56,16 +55,16 @@ void printBoard(){
             
             if (grid[i][j] != 0){
                 if (grid[i][j] == -1){
-                    cout << "☻ ";
+                    cout << "W ";
                 }
                 else if (grid[i][j] == 1){
-                    cout << "☺ ";
+                    cout << "B ";
                 }
             }else{
                 if (((i+1) % 2) == ((j+1) % 2)){
-                    cout << "• ";
+                    cout << "- ";
                 }else{
-                    cout << "○ ";
+                    cout << "- ";
                 }
             }
             
@@ -74,25 +73,28 @@ void printBoard(){
     } 
 }
 
-void printVectorOfVectors(vector<vector<string>> vec){
-    for (int i = 0; i < vec.size(); ++i){
-        printVector(vec[i]);
+bool movePiece(int moveRow, int moveColumn){
+    vector<vector<int>> oldGrid = grid;
+
+}
+
+bool checkForPiece(int pieceRow, int pieceColumn, string player){
+    bool found = false;
+    if (pieceRow > 0 && pieceColumn > 0 && pieceRow <= length && pieceColumn <= width){
+        if (player == "white's"){
+            if (grid[pieceRow-1][pieceColumn-1] == -1){
+                found = true;
+            } 
+        }
+        if (player == "black's"){
+            if (grid[pieceRow-1][pieceColumn-1] == 1){
+                found = true;
+            } 
+        }
+    }else{
+        cout << "Your input was outside the range of the board, please try again" << endl;
     }
-}
-
-void printVector(vector<string> vec){
-    for (int i = 0; i < vec.size(); ++i){
-        cout << vec[i];
-    }
-    cout << endl;
-}
-
-void getInput(){
-
-}
-
-void movePiece(){
-
+    return found;
 }
 
 int getBlackScore(){

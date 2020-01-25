@@ -11,17 +11,17 @@ class Board{
 private:
 int length;
 int width;
-int pieceTotal;
-int blackScore = 0;
-int whiteScore = 0;
+int blackScore;
+int whiteScore;
 
 vector<vector<int>> grid;
 
 public:
-Board(int length, int width, int pieceTotal){
-    this->pieceTotal = pieceTotal;
+Board(int length, int width){
     this->length = length;
     this->width = width;
+    blackScore = 0;
+    whiteScore = 0;
     buildGrid();
 }
 
@@ -51,6 +51,8 @@ void buildGrid(){
 }
 
 void printBoard(){
+    cout << "BLACK TEAM SCORE: " << blackScore << endl;
+    cout << "WHITE TEAM SCORE: " << whiteScore << endl;
     for (int i = 0; i < length; ++i){
         for (int j = 0; j < width; ++j){
             
@@ -80,21 +82,35 @@ bool movePiece(int row, int column, int moveRow, int moveColumn, string player){
     bool isWhitePiece = checkForPiece(moveRow, moveColumn, "white's");
     bool isEmptyTile = !checkForPiece(moveRow, moveColumn, "white's") && !checkForPiece(moveRow, moveColumn, "black's");
     bool isValid;
+    bool isValidSkip;
 
     if (player == "black's"){
         isValid = ((row - moveRow == 1) && (abs(column - moveColumn) == 1));
+        isValidSkip = (isValid && isWhitePiece);
+        blackScore += 1 * isValidSkip;
     }
     if (player == "white's"){
         isValid = ((moveRow - row == 1) && (abs(column - moveColumn) == 1));
+        isValidSkip = (isValid && isBlackPiece);
+        whiteScore += 1 * isValidSkip;
     }
 
     int input;
     vector<vector<int>> oldGrid = grid;
-    if (isEmptyTile && isValid){
-        oldGrid[moveRow][moveColumn] = oldGrid[row][column];
-        oldGrid[row][column] = 0;
-        grid = oldGrid;
-        hasMoved = true;
+    if ((isEmptyTile && isValid) || isValidSkip){
+        if (isValidSkip){
+            cout << "Skipping!" << endl;
+            oldGrid[moveRow - (row - moveRow)][moveColumn - (column - moveColumn)] = oldGrid[row][column];
+            oldGrid[moveRow][moveColumn] = 0;
+            oldGrid[row][column] = 0;
+            grid = oldGrid;
+            hasMoved = true;
+        }else{
+            oldGrid[moveRow][moveColumn] = oldGrid[row][column];
+            oldGrid[row][column] = 0;
+            grid = oldGrid;
+            hasMoved = true;
+        }
     }
     else if (moveRow == -1 || moveColumn == -1){
         hasMoved = true;

@@ -16,8 +16,8 @@ void playCheckers(){
     bool hasMoved = false;
     int row, column, moveRow, moveColumn;
     string player = "black's";
-    Board b1(8, 8, 24);
-    cout << "Welcome to checkers, enter 0 for either of the piece selection inputs to quit the game" << endl;
+    Board b1(8, 8);
+    cout << "Ready for some checkers? Enter 0 for either of the piece selection inputs to quit the game" << endl;
     cout << "Also, if you select a piece but want to move a different one instead, enter 0 for either of the movement inputs" << endl;
 
     while(gameOver == false){

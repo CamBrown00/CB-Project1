@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -75,12 +76,27 @@ void printBoard(){
 
 bool movePiece(int row, int column, int moveRow, int moveColumn, string player){
     bool hasMoved = false;
+    bool isBlackPiece = checkForPiece(moveRow, moveColumn, "black's");
+    bool isWhitePiece = checkForPiece(moveRow, moveColumn, "white's");
+    bool isEmptyTile = !checkForPiece(moveRow, moveColumn, "white's") && !checkForPiece(moveRow, moveColumn, "black's");
+    bool isValid;
+
+    if (player == "black's"){
+        isValid = ((row - moveRow == 1) && (abs(column - moveColumn) == 1));
+    }
+    if (player == "white's"){
+        isValid = ((moveRow - row == 1) && (abs(column - moveColumn) == 1));
+    }
+
     int input;
     vector<vector<int>> oldGrid = grid;
-    if (!checkForPiece(moveRow, moveColumn, "white's") && !checkForPiece(moveRow, moveColumn, "black's")){
+    if (isEmptyTile && isValid){
         oldGrid[moveRow][moveColumn] = oldGrid[row][column];
         oldGrid[row][column] = 0;
         grid = oldGrid;
+        hasMoved = true;
+    }
+    else if (moveRow == -1 || moveColumn == -1){
         hasMoved = true;
     }
     return hasMoved;
@@ -93,14 +109,14 @@ bool checkForPiece(int pieceRow, int pieceColumn, string player){
         if (player == "white's"){
             if (grid[pieceRow][pieceColumn] == -1){
                 found = true;
-            } 
+            }
         }
         if (player == "black's"){
             if (grid[pieceRow][pieceColumn] == 1){
                 found = true;
-            } 
+            }
         }
-    }else{
+    }else if (pieceRow != -1 && pieceColumn != -1){
         cout << "Your input was outside the range of the board, please try again" << endl;
     }
     return found;
